@@ -46,6 +46,7 @@ RUN set -x && \
   chown -R flink:flink ${FLINK_INSTALL_PATH}/job.jar && \
   chown -h flink:flink $FLINK_HOME
 
+COPY flink-conf.yaml $FLINK_HOME/conf/flink-conf.yaml
 COPY docker-entrypoint.sh /
 
 USER flink
