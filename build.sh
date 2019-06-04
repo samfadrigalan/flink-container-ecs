@@ -170,4 +170,4 @@ else
 
 fi
 
-docker build --build-arg flink_dist="${FLINK_DIST}" --build-arg job_jar="${JOB_JAR_TARGET}" --build-arg hadoop_jar="${SHADED_HADOOP}" -t "${IMAGE_NAME}" .
+docker build --no-cache --build-arg flink_dist="${FLINK_DIST}" --build-arg job_jar="${JOB_JAR_TARGET}" --build-arg hadoop_jar="${SHADED_HADOOP}" -t "${IMAGE_NAME}" .
