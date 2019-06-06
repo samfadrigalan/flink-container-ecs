@@ -1,0 +1,10 @@
+version: 1
+task_definition:
+  services:
+    job-cluster-test:
+      healthcheck:
+        start_period: 0
+    taskmanager:
+      healthcheck:
+        start_period: 0
+        

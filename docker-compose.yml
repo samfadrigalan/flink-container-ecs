@@ -25,15 +25,40 @@
 # * FLINK_JOB_ARGUMENTS - Additional arguments which will be passed to the job cluster (default: none)
 # * SAVEPOINT_OPTIONS - Savepoint options to start the cluster with (default: none)
 
-version: "2.2"
+version: "3.0"
 services:
-  job-cluster:
+  job-cluster-test:
     image: ${FLINK_DOCKER_IMAGE_NAME:-flink-job}
     ports:
       - "8081:8081"
-    command: job-cluster --job-classname ${FLINK_JOB} -Djobmanager.rpc.address=job-cluster -Dparallelism.default=${DEFAULT_PARALLELISM:-1} ${SAVEPOINT_OPTIONS} ${FLINK_JOB_ARGUMENTS}
+    command: job-cluster --job-classname ${FLINK_JOB} -Djobmanager.rpc.address=job-cluster-test -Dparallelism.default=${DEFAULT_PARALLELISM:-1} ${SAVEPOINT_OPTIONS} ${FLINK_JOB_ARGUMENTS}
+    healthcheck:
+      test: ["CMD-SHELL", "ps -ef | grep org.apache.flink.container.entrypoint.StandaloneJobClusterEntryPoint | grep -q -v grep || exit 1"]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+    logging:
+      driver: awslogs
+      options: 
+        awslogs-group: job-cluster-test
+        awslogs-region: us-east-2
+        awslogs-stream-prefix: job-cluster-test
 
   taskmanager:
     image: ${FLINK_DOCKER_IMAGE_NAME:-flink-job}
-    command: task-manager -Djobmanager.rpc.address=job-cluster
-    scale: ${DEFAULT_PARALLELISM:-1}
+    command: task-manager -Djobmanager.rpc.address=job-cluster-test
+    # This parameter is not supported by ECS. There is no container level scaling, only Task level scaling.
+    # scale: ${DEFAULT_PARALLELISM:-1}
+    healthcheck:
+      test: ["CMD-SHELL", "ps -ef | grep org.apache.flink.runtime.taskexecutor.TaskManagerRunner | grep -q -v grep || exit 1"]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+    logging:
+      driver: awslogs
+      options: 
+        awslogs-group: taskmanager
+        awslogs-region: us-east-2
+        awslogs-stream-prefix: taskmanager
+    links:
+      - job-cluster-test
