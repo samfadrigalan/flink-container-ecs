@@ -1,3 +1,4 @@
+> Note: This project is copied from [here](https://github.com/apache/flink/tree/release-1.8/flink-container/docker) and was modified for AWS ECS deployment.
 # Apache Flink job cluster Docker image
 
 In order to deploy a job cluster on Docker, one needs to create an image which contains the Flink binaries as well as the user code jars of the job to execute.
