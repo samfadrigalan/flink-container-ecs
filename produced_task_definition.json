@@ -1,0 +1,207 @@
+{
+  "ipcMode": null,
+  "executionRoleArn": null,
+  "containerDefinitions": [
+    {
+      "dnsSearchDomains": [],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "secretOptions": null,
+        "options": {
+          "awslogs-group": "job-cluster-test",
+          "awslogs-region": "us-east-2",
+          "awslogs-stream-prefix": "job-cluster-test"
+        }
+      },
+      "entryPoint": [],
+      "portMappings": [
+        {
+          "hostPort": 8081,
+          "protocol": "tcp",
+          "containerPort": 8081
+        }
+      ],
+      "command": [
+        "job-cluster",
+        "--job-classname",
+        "wikiedits.SimpleKafkaWriter",
+        "-Djobmanager.rpc.address=job-cluster-test",
+        "-Dparallelism.default=1"
+      ],
+      "linuxParameters": {
+        "capabilities": {
+          "add": null,
+          "drop": null
+        },
+        "sharedMemorySize": null,
+        "tmpfs": null,
+        "devices": [],
+        "initProcessEnabled": null
+      },
+      "cpu": 0,
+      "environment": [],
+      "resourceRequirements": null,
+      "ulimits": null,
+      "dnsServers": [],
+      "mountPoints": [],
+      "workingDirectory": null,
+      "secrets": null,
+      "dockerSecurityOptions": [],
+      "memory": 512,
+      "memoryReservation": null,
+      "volumesFrom": [],
+      "stopTimeout": null,
+      "image": "777875060350.dkr.ecr.us-east-2.amazonaws.com/flink-test",
+      "startTimeout": null,
+      "dependsOn": null,
+      "disableNetworking": null,
+      "interactive": null,
+      "healthCheck": {
+        "retries": 3,
+        "command": [
+          "CMD-SHELL",
+          "ps -ef | grep org.apache.flink.container.entrypoint.StandaloneJobClusterEntryPoint | grep -q -v grep || exit 1"
+        ],
+        "timeout": 10,
+        "interval": 90,
+        "startPeriod": 0
+      },
+      "essential": true,
+      "links": [],
+      "hostname": null,
+      "extraHosts": [],
+      "pseudoTerminal": false,
+      "user": null,
+      "readonlyRootFilesystem": false,
+      "dockerLabels": null,
+      "systemControls": null,
+      "privileged": false,
+      "name": "job-cluster-test"
+    },
+    {
+      "dnsSearchDomains": [],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "secretOptions": null,
+        "options": {
+          "awslogs-group": "taskmanager",
+          "awslogs-region": "us-east-2",
+          "awslogs-stream-prefix": "taskmanager"
+        }
+      },
+      "entryPoint": [],
+      "portMappings": [],
+      "command": [
+        "task-manager",
+        "-Djobmanager.rpc.address=job-cluster-test"
+      ],
+      "linuxParameters": {
+        "capabilities": {
+          "add": null,
+          "drop": null
+        },
+        "sharedMemorySize": null,
+        "tmpfs": null,
+        "devices": [],
+        "initProcessEnabled": null
+      },
+      "cpu": 0,
+      "environment": [],
+      "resourceRequirements": null,
+      "ulimits": null,
+      "dnsServers": [],
+      "mountPoints": [],
+      "workingDirectory": null,
+      "secrets": null,
+      "dockerSecurityOptions": [],
+      "memory": 512,
+      "memoryReservation": null,
+      "volumesFrom": [],
+      "stopTimeout": null,
+      "image": "777875060350.dkr.ecr.us-east-2.amazonaws.com/flink-test",
+      "startTimeout": null,
+      "dependsOn": null,
+      "disableNetworking": null,
+      "interactive": null,
+      "healthCheck": {
+        "retries": 3,
+        "command": [
+          "CMD-SHELL",
+          "ps -ef | grep org.apache.flink.runtime.taskexecutor.TaskManagerRunner | grep -q -v grep || exit 1"
+        ],
+        "timeout": 10,
+        "interval": 90,
+        "startPeriod": 0
+      },
+      "essential": true,
+      "links": [
+        "job-cluster-test"
+      ],
+      "hostname": null,
+      "extraHosts": [],
+      "pseudoTerminal": false,
+      "user": null,
+      "readonlyRootFilesystem": false,
+      "dockerLabels": null,
+      "systemControls": null,
+      "privileged": false,
+      "name": "taskmanager"
+    }
+  ],
+  "placementConstraints": [],
+  "memory": null,
+  "taskRoleArn": null,
+  "compatibilities": [
+    "EC2"
+  ],
+  "taskDefinitionArn": "arn:aws:ecs:us-east-2:777875060350:task-definition/flink-container-ecs:25",
+  "family": "flink-container-ecs",
+  "requiresAttributes": [
+    {
+      "targetId": null,
+      "targetType": null,
+      "value": null,
+      "name": "com.amazonaws.ecs.capability.docker-remote-api.1.17"
+    },
+    {
+      "targetId": null,
+      "targetType": null,
+      "value": null,
+      "name": "com.amazonaws.ecs.capability.docker-remote-api.1.29"
+    },
+    {
+      "targetId": null,
+      "targetType": null,
+      "value": null,
+      "name": "com.amazonaws.ecs.capability.ecr-auth"
+    },
+    {
+      "targetId": null,
+      "targetType": null,
+      "value": null,
+      "name": "com.amazonaws.ecs.capability.logging-driver.awslogs"
+    },
+    {
+      "targetId": null,
+      "targetType": null,
+      "value": null,
+      "name": "ecs.capability.container-health-check"
+    },
+    {
+      "targetId": null,
+      "targetType": null,
+      "value": null,
+      "name": "com.amazonaws.ecs.capability.docker-remote-api.1.19"
+    }
+  ],
+  "pidMode": null,
+  "requiresCompatibilities": [
+    "EC2"
+  ],
+  "networkMode": null,
+  "cpu": null,
+  "revision": 25,
+  "status": "ACTIVE",
+  "proxyConfiguration": null,
+  "volumes": []
+}
